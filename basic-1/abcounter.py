@@ -1,21 +1,29 @@
-# Marco Riggirello
+'''Marco Riggirello'''
 
 import argparse
 
-parser = argparse.ArgumentParser(prog='ABCounter', description='Counts the relative frequencies of letters (case unsensitive).')
-parser.add_argument('fname', help='The name of the text file to be processed.')
+def counter(string):
+    '''Returns the absolute frequency of letters in a string into a dictionary.
+    The counter is case unsensitive.
+    '''
+    letters = 'abcdefghijklmnopqrstuvwxyz'
+    lstr = string.lower()
+    return dict(zip(letters, list(map(lstr.count, letters))))
 
-args = parser.parse_args()
+if __name__ == '__main__':
+    DESC = 'Counts the relative frequencies of letters (case unsensitive).'
+    parser = argparse.ArgumentParser(prog='ABCounter', description=DESC)
+    parser.add_argument('fname', help='The name of the text file to be processed.')
 
-letters = 'abcdefghijklmnopqrstuvwxyz'
-text = open(args.fname, 'r').read().lower()
+    args = parser.parse_args()
+    with open(args.fname, 'r', encoding='utf-8') as file:
+        text = file.read()
 
-abs_freqs = dict(zip(letters, list(map(text.count, letters))))
-tot = sum(abs_freqs.values())
+    abs_freqs = counter(text)
+    tot = sum(abs_freqs.values())
 
-print('--------|-----------')
-print(' letter | freq. [%]')
-print('--------|-----------')
-for ch in abs_freqs:
-    print(f' {ch}      | {100*abs_freqs[ch]/tot:.2f}')
-
+    print('--------|-----------')
+    print(' letter | freq. [%]')
+    print('--------|-----------')
+    for ch in abs_freqs:
+        print(f' {ch}      | {100*abs_freqs[ch]/tot:.2f}')
