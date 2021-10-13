@@ -35,8 +35,6 @@ class Particle:
         """Metodo speciale per stampare informazioni sugli
         oggetti di questa classe.
         """
-        #return '{}(name = {}, mass = {}, charge = {}, momentum = {})'\
-        #        .format('Particle', self.name, self.mass, self.charge, self.momentum)
         return f"{Particle}(name = {self.name}, mass = {self.mass},\
                 charge = self.charge, momentum = {self.momentum})"
 
