@@ -13,18 +13,18 @@ class ProbabilityDensityFunction(IUS):
         # some very sharp distribution may not be well described by a
         # cubic spline. This means that the pdf may have values < 0,
         # hence the cdf is not monotone, hence not invertible.
-        raw_spl_int = IUS(x, y, k=k, ext="zeros").antiderivative()
-        if np.any(np.diff(raw_spl_int(x))<0.0):
+        try:
+            raw_spl_int = IUS(x, y, k=k, ext="zeros").antiderivative()
+            norm_coeff = raw_spl_int(x[-1])
+            IUS.__init__(self, x, y/norm_coeff, k=k, ext="zeros")
+            self.cdf = self.antiderivative()
+            ppf_mask = np.concatenate(([True], np.diff(self.cdf(x))>0.0))
+            self.ppf = IUS(self.cdf(x[ppf_mask]), x[ppf_mask], ext="zeros")
+        except ValueError:
             raise RuntimeError(("Spline interpolation returned non-monotone "
-                "cumulative density function: this means that the pdf described "
-                "by the spline has values < 0. It is a limit of the spline approach."
-                "\nTry to lower the spline order or to increase the number of sampled "
-                "point to avoid this problem."))
-        norm_coeff = raw_spl_int(x[-1])
-        IUS.__init__(self, x, y/norm_coeff, k=k, ext="zeros")
-        self.cdf = self.antiderivative()
-        ppf_mask = np.concatenate(([True], np.diff(self.cdf(x))>0.0))
-        self.ppf = IUS(self.cdf(x[ppf_mask]), x[ppf_mask], ext="zeros")
+                "cumulative density function. Try to lower the spline order or "
+                "to increase the number of sampled point to avoid this problem."
+                " See the documentation for more details.")) from ValueError
 
     def probability(self, a, b): # pylint: disable=invalid-name
         """Tells the probability to find a value between a and b.
