@@ -46,8 +46,8 @@ class ProbabilityDensityFunction(IUS):
 
     Methods
     -------
-    probability : returns the probability for a value to be find in the
-        interval [a, b).
+    probability : returns the probability for a value to be found in the
+        interval [a, b].
     random : returns a float number distributed according to the pdf.
 
     Note on the interpolation method to build a pdf:
@@ -141,8 +141,6 @@ class ProbabilityDensityFunction(IUS):
 
         rng = np.random.default_rng()
         return self.ppf(rng.random(**kwargs))
-
-print(ProbabilityDensityFunction.__doc__)
 
 if __name__ == "__main__":
     print("This is a module.")
