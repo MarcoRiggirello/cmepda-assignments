@@ -70,7 +70,7 @@ class ProbabilityDensityFunction(IUS):
         Parameters
         ----------
         x : (N,) array-like
-            Input data-points. Must be streactly increasing.
+            Input data-points. Must be strictly increasing.
         y : (N,) array-like
             Input values of the pdf evalueted over x data. Must be greater
             than zero.
