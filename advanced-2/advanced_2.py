@@ -24,17 +24,7 @@ class VoltageData:
         -----
         tension and time must be of the same size.
         """
-
-        #Check for correct shape
-        if len(tension)==len(time):
-            #Check for correct data type
-            try:
-                self._v = np.array(tension, dtype=float)
-                self._t = np.array(time, dtype=float)
-            except ValueError as err:
-                print(err)
-        else:
-            raise ValueError("incorrect shape. Data must have the same length.")
+        self._data = np.array([tension, time], dtype=float).transpose()
 
     @classmethod
     def load_data(cls, fname):
@@ -45,18 +35,18 @@ class VoltageData:
         return cls(tension, time)
 
     @property
-    def v(self):
+    def voltage(self):
 
         """Allows to read the private variable self._v."""
 
-        return self._v
+        return self._data[:,0]
 
     @property
-    def t(self):
+    def time(self):
 
         """Allows to read the private variable self._t."""
 
-        return self._t
+        return self._data[:,1]
 
     def __iter__(self):
 
@@ -74,15 +64,13 @@ class VoltageData:
         time[index2] if index1 = 1
         """
 
-        index1, index2 = indexx
-        measure = np.array([self._v, self._t])
-        return measure[index1, index2]
+        return self._data[indexx[0], indexx[1]]
 
     def __len__(self):
 
         """Returns the length of the data samples."""
 
-        return len(self._v)
+        return len(self._data)
 
     def __repr__(self):
 
