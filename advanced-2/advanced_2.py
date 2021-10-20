@@ -1,4 +1,4 @@
-#Assignment basic 3 for cmepda - by Antoine Venturini
+#Assignment advanced-2 for cmepda - by Antoine Venturini and Marco Riggirello.
 
 """The VoltageData class manipulates time and voltage data."""
 
