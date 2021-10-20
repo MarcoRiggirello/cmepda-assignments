@@ -19,7 +19,7 @@ class VoltageData:
 
     Note
     ----
-    voltage and time must have the same shape.    
+    voltage and time must have the same shape.
 
     Methods
     -------
@@ -28,7 +28,7 @@ class VoltageData:
         the data from a file.
 
     __len__(self)
-        The length of a VoltageData instance is the length of the data samples. 
+        The length of a VoltageData instance is the length of the data samples.
 
     __getitem__(self, indexx)
         Permits to access the voltage or time data through [].
@@ -41,7 +41,7 @@ class VoltageData:
         Return
         ------
         tension[index2] if index1 = 0
-        time[index2] if index1 = 1        
+        time[index2] if index1 = 1
     __call__(self, time_0)
         Transform a class instance in a function if a float
         is passed as argument.
@@ -55,7 +55,6 @@ class VoltageData:
         ------
         voltage_0 : float
             Voltage value at time_0 extrapolated with a spline interpolation.
-          
     """
 
     def __init__(self, tension, time):
@@ -126,7 +125,7 @@ class VoltageData:
         Prints class instances in a pretty way.
 
         The data are printed with this organization:
-        line number - tension entry    time entry
+        'line number \t tension entry \t time entry'
         """
 
         s = ''
@@ -140,11 +139,11 @@ class VoltageData:
         Prints class instances.
 
         The data are printed with this organization:
-        tension entry    time entry
+        'tension entry \t time entry'
         """
 
         s = ''
-        for i, data in enumerate(self):
+        for data in self:
             s += f'{data[0]} \t {data[1]}\n'
         return s
 
@@ -163,7 +162,6 @@ class VoltageData:
         ------
         voltage_0 : float
             Voltage value at time_0 extrapolated with a spline interpolation.
-        
         """
 
         #Interpolation esteem fails out self.time bonds.
@@ -171,7 +169,7 @@ class VoltageData:
             spline = IUS(self.time, self.voltage, ext='zeros')
             return spline(time_0)
         else:
-            raise ValueError('Input data out of time measurements limits.' )
+            raise ValueError('Input data out of time measurements limits.')
 
 #Spunto per gli unittest
 tempo = np.array([0., 1., 2., 3., 4., 6.])
