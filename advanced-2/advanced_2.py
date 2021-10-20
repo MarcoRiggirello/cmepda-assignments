@@ -1,13 +1,61 @@
 #Assignment basic 3 for cmepda - by Antoine Venturini
 
-"""La classe LabData gestisce un file di dati tensioni-tempo"""
+"""The VoltageData class manipulates time and voltage data."""
 
 import numpy as np
+from scipy.interpolate import InterpolatedUnivariateSpline as IUS
 
 class VoltageData:
     #pylint: disable=invalid-name
     """
     The VoltageData class manipulates two sets of data: time and voltage.
+
+    Arguments
+    ---------
+    voltage : (N,) array of floats
+        Voltage measurements.
+    time : (N,) array of floats
+        Time measurements.
+
+    Note
+    ----
+    voltage and time must have the same shape.    
+
+    Methods
+    -------
+    load_data(cls, fname)
+        This classmethod permits to initialize a VoltageData instance loading
+        the data from a file.
+
+    __len__(self)
+        The length of a VoltageData instance is the length of the data samples. 
+
+    __getitem__(self, indexx)
+        Permits to access the voltage or time data through [].
+
+        Parameter
+        ---------
+
+        indexx : (2,) tuple of int
+
+        Return
+        ------
+        tension[index2] if index1 = 0
+        time[index2] if index1 = 1        
+    __call__(self, time_0)
+        Transform a class instance in a function if a float
+        is passed as argument.
+
+        Parameter
+        ---------
+        time_0 : float
+            Instant in which evauate the voltage.
+
+        Return
+        ------
+        voltage_0 : float
+            Voltage value at time_0 extrapolated with a spline interpolation.
+          
     """
 
     def __init__(self, tension, time):
@@ -52,7 +100,7 @@ class VoltageData:
 
         """La classe è iterabile e restituisce la coppia (v[i], t[i])."""
 
-        return iter(list(zip(self._v, self._t)))
+        return iter(self._data)
 
 
     def __getitem__(self, indexx):
@@ -86,11 +134,50 @@ class VoltageData:
             s += f'{i} \t {data[0]} \t {data[1]}\n'
         return s
 
+    def __str__(self):
+
+        """
+        Prints class instances.
+
+        The data are printed with this organization:
+        tension entry    time entry
+        """
+
+        s = ''
+        for i, data in enumerate(self):
+            s += f'{data[0]} \t {data[1]}\n'
+        return s
+
+    def __call__(self, time_0):
+
+        """
+        The function permits to evaluate the voltage at the istant time_0.
+        The value is derived through interpolation of the data with a spline.
+
+        Parameter
+        ---------
+        time_0 : float
+            Instant in which evauate the voltage.
+
+        Return
+        ------
+        voltage_0 : float
+            Voltage value at time_0 extrapolated with a spline interpolation.
+        
+        """
+
+        #Interpolation esteem fails out self.time bonds.
+        if self.time[0]<= time_0 <= self.time[-1]:
+            spline = IUS(self.time, self.voltage, ext='zeros')
+            return spline(time_0)
+        else:
+            raise ValueError('Input data out of time measurements limits.' )
+
 #Spunto per gli unittest
 tempo = np.array([0., 1., 2., 3., 4., 6.])
 tensione = np.array([1., 2., 5., 2., 1., 2.])
 
 lab_session = VoltageData(tensione, tempo)
-print(lab_session[0, 3])
+print(lab_session[2, 0])
 print(len(lab_session))
 print(lab_session)
