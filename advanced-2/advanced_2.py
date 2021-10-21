@@ -185,12 +185,3 @@ class VoltageData:
         if draw_line:
             xx = np.linspace(self.time[0], self.time[-1], 100)
             plt.plot(xx, self(xx), linestyle="-", marker=" ")
-
-#Spunto per gli unittest
-tempo = np.array([0., 1., 2., 3., 4., 6.])
-tensione = np.array([1., 2., 5., 2., 1., 2.])
-
-lab_session = VoltageData(tensione, tempo)
-print(lab_session[2, 0])
-print(len(lab_session))
-print(lab_session)
