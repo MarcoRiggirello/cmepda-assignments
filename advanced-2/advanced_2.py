@@ -170,12 +170,3 @@ class VoltageData:
             return spline(time_0)
         else:
             raise ValueError('Input data out of time measurements limits.')
-
-#Spunto per gli unittest
-tempo = np.array([0., 1., 2., 3., 4., 6.])
-tensione = np.array([1., 2., 5., 2., 1., 2.])
-
-lab_session = VoltageData(tensione, tempo)
-print(lab_session[2, 0])
-print(len(lab_session))
-print(lab_session)
