@@ -3,7 +3,6 @@
 import unittest
 
 import numpy as np
-from scipy.interpolate import InterpolatedUnivariateSpline as IUS
 
 from advanced_2 import VoltageData
 
