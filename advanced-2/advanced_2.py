@@ -171,17 +171,12 @@ class VoltageData:
         else:
             raise ValueError('Input data out of time measurements limits.')
 
-    def plot(self, draw_line=True):
+    def plot(self, *args, **kwargs):
 
         """
         Shows a matplotlib plot of data.
         """
 
         from matplotlib import pyplot as plt
-        plt.title("Voltage Data")
-        plt.xlabel("Time")
-        plt.ylabel("Voltage")
-        plt.plot(self.time, self.voltage, linestyle=" ", marker=".")
-        if draw_line:
-            xx = np.linspace(self.time[0], self.time[-1], 100)
-            plt.plot(xx, self(xx), linestyle="-", marker=" ")
+        xx = np.linspace(self.time[0], self.time[-1], 1000)
+        plt.plot(self.time, self.voltage, ".", xx, self(xx), "-", args, kwargs)
