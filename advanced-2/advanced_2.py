@@ -72,6 +72,7 @@ class VoltageData:
         tension and time must be of the same size.
         """
         self._data = np.array([tension, time], dtype=float).transpose()
+        self._spline = IUS(self.time, self.voltage, ext="raise")
 
     @classmethod
     def load_data(cls, fname):
@@ -165,11 +166,7 @@ class VoltageData:
         """
 
         #Interpolation esteem fails out self.time bonds.
-        if self.time[0]<= time_0 <= self.time[-1]:
-            spline = IUS(self.time, self.voltage, ext='zeros')
-            return spline(time_0)
-        else:
-            raise ValueError('Input data out of time measurements limits.')
+        return self._spline(time_0)
 
     def plot(self, *args, **kwargs):
 
@@ -179,4 +176,4 @@ class VoltageData:
 
         from matplotlib import pyplot as plt
         xx = np.linspace(self.time[0], self.time[-1], 1000)
-        plt.plot(self.time, self.voltage, ".", xx, self(xx), "-", args, kwargs)
+        plt.plot(xx, self(xx), "-", self.time, self.voltage, ".", *args, **kwargs)
