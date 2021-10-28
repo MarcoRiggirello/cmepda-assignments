@@ -166,5 +166,14 @@ class VoltageData:
         """
 
         #Interpolation esteem fails out self.time bonds.
-        
         return self._spline(time_0)
+
+    def plot(self, *args, **kwargs):
+
+        """
+        Shows a matplotlib plot of data.
+        """
+
+        from matplotlib import pyplot as plt
+        xx = np.linspace(self.time[0], self.time[-1], 1000)
+        plt.plot(xx, self(xx), "-", self.time, self.voltage, ".", *args, **kwargs)
